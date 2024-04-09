@@ -20,14 +20,14 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.hpcc.expo-redux-template"
+      "bundleIdentifier": "com.droussielle.chi-tieu"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.hpcc.expo_redux_template"
+      "package": "com.droussielle.chi-tieu"
     },
     "web": {
       "favicon": "./assets/favicon.png"
