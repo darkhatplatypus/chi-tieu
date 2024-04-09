@@ -1,13 +1,21 @@
 import { i18n, LocalizationKey } from "@/Localization";
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Button } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { HStack, Spinner, Heading } from "native-base";
 import { User } from "@/Services";
 
+import * as SecureStore from 'expo-secure-store';
+
+
+
 export interface IHomeProps {
   data: User | undefined;
   isLoading: boolean;
+}
+
+function removeData(){
+  SecureStore.setItem('isOnboarded','false');
 }
 
 export const Home = (props: IHomeProps) => {
@@ -28,6 +36,7 @@ export const Home = (props: IHomeProps) => {
           <Heading color="primary.500" fontSize="md">
             {data?.username}
           </Heading>
+          <Button onPress={removeData()} title="Clear onboarding data"/>
         </>
       )}
     </View>

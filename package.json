@@ -20,6 +20,7 @@
     "expo-device": "~5.9.3",
     "expo-image-picker": "~14.7.1",
     "expo-localization": "~14.8.3",
+    "expo-secure-store": "~12.8.1",
     "expo-status-bar": "~1.11.1",
     "expo-updates": "~0.24.12",
     "i18n-js": "^4.1.1",
