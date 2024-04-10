@@ -1,16 +1,34 @@
 import Onboarding from "react-native-onboarding-swiper";
-import { Image, View, StyleSheet } from "react-native";
+import {
+  Image,
+  View,
+  StyleSheet,
+  SafeAreaView,
+  ScrollView,
+} from "react-native";
 import React from "react";
 import { RootScreens } from "..";
-import { Button, Text, FAB } from "react-native-paper";
+import {
+  Button,
+  Text,
+  FAB,
+  Divider,
+  List,
+  MD3Colors,
+  IconButton,
+  Switch,
+  Snackbar,
+} from "react-native-paper";
 import { StatusBar } from "expo-status-bar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { OnboardingContainer } from "./OnboardingContainer";
-import { Center } from "native-base";
+import { Center, Row } from "native-base";
 
 export const OnboardingScreen = (props: {
   onNavigate: (string: RootScreens) => void;
 }) => {
+  const [visible, setVisible] = React.useState(false);
+  const onDismissSnackBar = () => setVisible(false);
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
@@ -54,9 +72,7 @@ export const OnboardingScreen = (props: {
             ),
             title: (
               <Text variant="displayMedium" style={{ marginHorizontal: 16 }}>
-                Chào mừng
-                đến với
-                Chi Tiêu
+                Chào mừng đến với Chi Tiêu
               </Text>
             ),
             subtitle: "",
@@ -138,7 +154,106 @@ export const OnboardingScreen = (props: {
                 Chào mừng đến với Chi Tiêu
               </Text>
             ),
-            subtitle: "Beautiful, isn't it?",
+            subtitle: (
+              <View style={{ paddingHorizontal: 48, height: "60%" }}>
+                <Text variant="bodyMedium">
+                  Trước khi tiếp tục, bạn nên xem qua các phân loại cho các
+                  khoản chi thường dùng, và chỉnh sửa theo sở thích. Ngoài ra
+                  bạn có thể tinh chỉnh một số cài đặt hay dùng.
+                </Text>
+                <Divider />
+                <ScrollView
+                  style={styles.scrollView}
+                  persistentScrollbar={true}
+                >
+                  <List.Section>
+                    <List.Subheader
+                      style={{ paddingVertical: 0, marginVertical: 0 }}
+                    >
+                      Phân loại
+                    </List.Subheader>
+                    <List.Item
+                      title="Quần áo"
+                      left={() => <List.Icon color="#DC86D3" icon="circle" />}
+                      right={() => (
+                        <IconButton icon="close" size={20}></IconButton>
+                      )}
+                      style={{ height: 48 }}
+                    />
+                    <List.Item
+                      title="Sách vở"
+                      left={() => <List.Icon color="#B8D85F" icon="circle" />}
+                      right={() => (
+                        <IconButton icon="close" size={20}></IconButton>
+                      )}
+                      style={{ height: 48 }}
+                    />
+                    <List.Item
+                      title="Điện tử"
+                      left={() => <List.Icon color="#75C1F9" icon="circle" />}
+                      right={() => (
+                        <IconButton icon="close" size={20}></IconButton>
+                      )}
+                      style={{ height: 48 }}
+                    />
+                    <List.Item
+                      title="Đồ ăn"
+                      left={() => <List.Icon color="#F3B78B" icon="circle" />}
+                      right={() => (
+                        <IconButton icon="close" size={20}></IconButton>
+                      )}
+                      style={{ height: 48 }}
+                    />
+                    <Button
+                      icon="plus"
+                      onPress={() => {
+                        setVisible(!visible);
+                      }}
+                    >
+                      Thêm phân loại
+                    </Button>
+                  </List.Section>
+                  <Divider />
+                  <List.Section>
+                    <List.Subheader
+                      style={{ paddingVertical: 0, marginVertical: 0 }}
+                    >
+                      Ngày và giờ
+                    </List.Subheader>
+                    <List.Item
+                      title="Ngày giờ tự động"
+                      right={() => <Switch value={true} />}
+                      style={{ height: 48 }}
+                    />
+                    <List.Item
+                      title="Múi giờ tự động"
+                      right={() => <Switch value={true} />}
+                      style={{ height: 48 }}
+                    />
+                  </List.Section>
+                  <Divider />
+                  <List.Section>
+                    <List.Subheader
+                      style={{ paddingVertical: 0, marginVertical: 0 }}
+                    >
+                      Ngôn ngữ
+                    </List.Subheader>
+                    <List.Item
+                      title="Tiếng Việt (Việt Nam)"
+                      right={() => (
+                        <IconButton icon="chevron-right" size={20}></IconButton>
+                      )}
+                      style={{ height: 48 }}
+                      android_ripple={{ color: "rgba(0, 0, 0, .32)" }}
+                      // rippleColor="rgba(0, 0, 0, .32)"
+                    />
+                  </List.Section>
+                </ScrollView>
+                <Snackbar visible={visible} onDismiss={onDismissSnackBar}>
+                  Added an item
+                </Snackbar>
+              </View>
+            ),
           },
         ]}
       />
@@ -153,10 +268,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  scrollView: {},
   onboardingContainer: {
     flex: 0,
     flexDirection: "column",
     width: "100%",
+    height: "60%",
     paddingHorizontal: 48,
     rowGap: 36,
   },

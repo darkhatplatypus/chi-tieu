@@ -46,7 +46,7 @@ export const Home = (props: IHomeProps) => {
             Clear data & restart
           </Button>
           <Snackbar visible={visible} onDismiss={onDismissSnackBar}>
-            Onboarding reset. Reload app in Expo Go to view the onboarding.
+            Onboarding reset. Reload or reopen app in Expo Go to view the onboarding.
           </Snackbar>
         </>
       )}
