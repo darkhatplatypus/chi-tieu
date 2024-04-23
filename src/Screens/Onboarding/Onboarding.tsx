@@ -86,58 +86,60 @@ export const OnboardingScreen = (props: {
               />
             ),
             title: (
-              <Text variant="displaySmall" style={{ marginHorizontal: 32 }}>
+              <Text variant="displaySmall" style={{ paddingHorizontal: 20 }}>
                 Chào mừng đến với Chi Tiêu
               </Text>
             ),
             subtitle: (
               <View style={styles.onboardingContainer}>
-                <View style={styles.onboardingElement}>
-                  <FAB
-                    icon="spa"
-                    size="large"
-                    mode="flat"
-                    style={{ alignSelf: "flex-start" }}
-                  />
-                  <View style={{ flex: 1, flexDirection: "column" }}>
-                    <Text variant="titleMedium">Tiện lợi</Text>
-                    <Text variant="bodyMedium">
-                      Quản lý chi tiêu mọi lúc, mọi nơi, ngay trên điện thoại
-                      của mình, không cần tính giấy hay máy tính bỏ túi như
-                      trước nữa.
-                    </Text>
+                <ScrollView >
+                  <View style={styles.onboardingElement}>
+                    <FAB
+                      icon="spa"
+                      size="large"
+                      mode="flat"
+                      style={{ alignSelf: "flex-start" }}
+                    />
+                    <View style={{ flex: 1, flexDirection: "column" }}>
+                      <Text variant="titleMedium">Tiện lợi</Text>
+                      <Text variant="bodyMedium">
+                        Quản lý chi tiêu mọi lúc, mọi nơi, ngay trên điện thoại
+                        của mình, không cần tính giấy hay máy tính bỏ túi như
+                        trước nữa.
+                      </Text>
+                    </View>
                   </View>
-                </View>
-                <View style={styles.onboardingElement}>
-                  <FAB
-                    icon="emoticon-happy"
-                    size="large"
-                    mode="flat"
-                    style={{ alignSelf: "flex-start" }}
-                  />
-                  <View style={{ flex: 1, flexDirection: "column" }}>
-                    <Text variant="titleMedium">Thân thiện</Text>
-                    <Text variant="bodyMedium">
-                      Giao diện thân thiện, tối giản, giúp bạn nắm bắt được
-                      thông tin cần thiết một cách nhanh gọn nhất có thể.
-                    </Text>
+                  <View style={styles.onboardingElement}>
+                    <FAB
+                      icon="emoticon-happy"
+                      size="large"
+                      mode="flat"
+                      style={{ alignSelf: "flex-start" }}
+                    />
+                    <View style={{ flex: 1, flexDirection: "column" }}>
+                      <Text variant="titleMedium">Thân thiện</Text>
+                      <Text variant="bodyMedium">
+                        Giao diện thân thiện, tối giản, giúp bạn nắm bắt được
+                        thông tin cần thiết một cách nhanh gọn nhất có thể.
+                      </Text>
+                    </View>
                   </View>
-                </View>
-                <View style={styles.onboardingElement}>
-                  <FAB
-                    icon="security"
-                    size="large"
-                    mode="flat"
-                    style={{ alignSelf: "flex-start" }}
-                  />
-                  <View style={{ flex: 1, flexDirection: "column" }}>
-                    <Text variant="titleMedium">Bảo mật</Text>
-                    <Text variant="bodyMedium">
-                      Mã hoá đầu cuối theo tiêu chuẩn quân đội nhằm bảo vệ thông
-                      tin riêng tư của bạn khỏi kẻ xấu lợi dụng.
-                    </Text>
+                  <View style={styles.onboardingElement}>
+                    <FAB
+                      icon="security"
+                      size="large"
+                      mode="flat"
+                      style={{ alignSelf: "flex-start" }}
+                    />
+                    <View style={{ flex: 1, flexDirection: "column" }}>
+                      <Text variant="titleMedium">Bảo mật</Text>
+                      <Text variant="bodyMedium">
+                        Mã hoá đầu cuối theo tiêu chuẩn quân đội nhằm bảo vệ
+                        thông tin riêng tư của bạn khỏi kẻ xấu lợi dụng.
+                      </Text>
+                    </View>
                   </View>
-                </View>
+                </ScrollView>
               </View>
             ),
           },
@@ -150,22 +152,22 @@ export const OnboardingScreen = (props: {
               />
             ),
             title: (
-              <Text variant="displaySmall" style={{ marginHorizontal: 32 }}>
+              <Text variant="displaySmall" style={{ marginHorizontal: 20 }}>
                 Chào mừng đến với Chi Tiêu
               </Text>
             ),
             subtitle: (
-              <View style={{ paddingHorizontal: 48, height: "60%" }}>
+              <View style={styles.onboardingContainer}>
                 <Text variant="bodyMedium">
                   Trước khi tiếp tục, bạn nên xem qua các phân loại cho các
                   khoản chi thường dùng, và chỉnh sửa theo sở thích. Ngoài ra
                   bạn có thể tinh chỉnh một số cài đặt hay dùng.
                 </Text>
-                <Divider />
                 <ScrollView
                   style={styles.scrollView}
                   persistentScrollbar={true}
                 >
+                  <Divider />
                   <List.Section>
                     <List.Subheader
                       style={{ paddingVertical: 0, marginVertical: 0 }}
@@ -202,13 +204,14 @@ export const OnboardingScreen = (props: {
                       right={() => (
                         <IconButton icon="close" size={20}></IconButton>
                       )}
-                      style={{ height: 48 }}
+                      style={{  }}
                     />
                     <Button
                       icon="plus"
                       onPress={() => {
                         setVisible(!visible);
                       }}
+                      style={{flex:0}}
                     >
                       Thêm phân loại
                     </Button>
@@ -243,8 +246,11 @@ export const OnboardingScreen = (props: {
                       right={() => (
                         <IconButton icon="chevron-right" size={20}></IconButton>
                       )}
-                      style={{ height: 48 }}
+                      style={{}}
                       android_ripple={{ color: "rgba(0, 0, 0, .32)" }}
+                      onPress={() => {
+                        setVisible(!visible);
+                      }}
                       // rippleColor="rgba(0, 0, 0, .32)"
                     />
                   </List.Section>
@@ -268,20 +274,24 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  scrollView: {},
+  scrollView: {
+    marginTop: 16,
+  },
   onboardingContainer: {
+    marginTop: 16,
     flex: 0,
     flexDirection: "column",
     width: "100%",
-    height: "60%",
-    paddingHorizontal: 48,
-    rowGap: 36,
+    height: "50%",
+    paddingHorizontal: 36,
+    // borderWidth: 1,
   },
   onboardingElement: {
-    flex: 0,
+    flex: 1,
     flexDirection: "row",
     // borderWidth: 1,
     columnGap: 24,
+    marginBottom: 12,
   },
   tinyLogo: {
     width: 50,
@@ -305,7 +315,7 @@ const styles = StyleSheet.create({
     borderRadius: 96 / 2,
     overflow: "hidden",
     flex: 0,
-    marginHorizontal: 48,
+    marginHorizontal: 40,
     alignSelf: "flex-start",
   },
 });

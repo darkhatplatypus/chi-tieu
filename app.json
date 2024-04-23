@@ -13,7 +13,7 @@
     },
     "updates": {
       "fallbackToCacheTimeout": 0,
-      "url": "e1c34f56-2532-4121-82f2-5f924863574d"
+      "url": "https://u.expo.dev/e1c34f56-2532-4121-82f2-5f924863574d"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -27,7 +27,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.droussielle.chi-tieu"
+      "package": "com.droussielle.chi_tieu"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -41,8 +41,6 @@
         "projectId": "e1c34f56-2532-4121-82f2-5f924863574d"
       }
     },
-    "runtimeVersion": {
-      "policy": "sdkVersion"
-    }
+    "runtimeVersion": "1.0.0"
   }
 }

@@ -19,20 +19,20 @@ const RootStack = createNativeStackNavigator<RootStackParamList>();
 
 // @refresh reset
 const ApplicationNavigator = () => {
-  // const firstLaunch = true;
-  const [firstLaunch, setFirstLaunch] = React.useState(null);
-  React.useEffect(() => {
-    async function setData() {
-      const appData = await AsyncStorage.getItem("appLaunched");
-      if (appData == null) {
-        await AsyncStorage.setItem("appLaunched", "false");
-        setFirstLaunch(true);
-      } else {
-        setFirstLaunch(false);
-      }
-    }
-    setData();
-  }, []);
+  const firstLaunch = true;
+  // const [firstLaunch, setFirstLaunch] = React.useState(null);
+  // React.useEffect(() => {
+  //   async function setData() {
+  //     const appData = await AsyncStorage.getItem("appLaunched");
+  //     if (appData == null) {
+  //       await AsyncStorage.setItem("appLaunched", "false");
+  //       setFirstLaunch(true);
+  //     } else {
+  //       setFirstLaunch(false);
+  //     }
+  //   }
+  //   setData();
+  // }, []);
   // const firstLaunch = false;
   return (
     firstLaunch != null && (<NavigationContainer>
