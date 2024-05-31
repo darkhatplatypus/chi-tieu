@@ -8,15 +8,12 @@ import { Button, Text, Snackbar } from "react-native-paper";
 import { RootScreens } from "..";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import * as SecureStore from "expo-secure-store";
-
-export interface IHomeProps {
+export interface IAnalyticsProps {
   data: User | undefined;
   isLoading: boolean;
-  onNavigate: (string: RootScreens) => void;
 }
 
-export const Home = (props: IHomeProps) => {
+export const Analytics = (props: IAnalyticsProps) => {
   const { data, isLoading } = props;
   const [visible, setVisible] = React.useState(false);
   const onDismissSnackBar = () => setVisible(false);
@@ -36,18 +33,7 @@ export const Home = (props: IHomeProps) => {
           <Heading color="primary.500" fontSize="md">
             {data?.username}
           </Heading> */}
-          <Button
-            mode="contained-tonal"
-            onPress={async () => {
-              await AsyncStorage.removeItem("appLaunched");
-              setVisible(!visible);
-            }}
-          >
-            Clear data & restart
-          </Button>
-          <Snackbar visible={visible} onDismiss={onDismissSnackBar}>
-            Onboarding reset. Reload or reopen app in Expo Go to view the onboarding.
-          </Snackbar>
+          <Text>This is the analytics screen</Text>
         </>
       )}
     </View>

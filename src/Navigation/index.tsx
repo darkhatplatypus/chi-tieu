@@ -1,54 +1,120 @@
 import React from "react";
-import { StatusBar } from "react-native";
+import { StatusBar, View } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { MainNavigator } from "./Main";
 import { OnboardingContainer } from "@/Screens/Onboarding";
 import { RootScreens } from "@/Screens";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { SearchNavigator } from "./Search";
+import { ActivityIndicator, Searchbar } from "react-native-paper";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { RootProps } from "@/Screens";
+import { createContext } from "react";
+import { AuthenticationNavigator } from "./Authentication";
 
-export type RootStackParamList = {
-  [RootScreens.MAIN]: undefined;
-  [RootScreens.WELCOME]: undefined;
-  [RootScreens.ONBOARDING]: undefined;
+const Stack = createNativeStackNavigator<RootProps>();
+
+const SearchBar = () => {
+  const [searchQuery, setSearchQuery] = React.useState("");
+  return (
+    <Searchbar
+      placeholder="Search"
+      onChangeText={setSearchQuery}
+      value={searchQuery}
+    />
+  );
 };
 
-import * as SecureStore from "expo-secure-store";
+const SplashScreen = () => {
+  return (
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      {/* <Text>Splash screen loading...</Text> */}
+      <ActivityIndicator />
+    </View>
+  );
+};
 
-const RootStack = createNativeStackNavigator<RootStackParamList>();
+export const LaunchContext = React.createContext();
 
 // @refresh reset
 const ApplicationNavigator = () => {
-  const firstLaunch = true;
-  // const [firstLaunch, setFirstLaunch] = React.useState(null);
-  // React.useEffect(() => {
-  //   async function setData() {
-  //     const appData = await AsyncStorage.getItem("appLaunched");
-  //     if (appData == null) {
-  //       await AsyncStorage.setItem("appLaunched", "false");
-  //       setFirstLaunch(true);
-  //     } else {
-  //       setFirstLaunch(false);
-  //     }
-  //   }
-  //   setData();
-  // }, []);
-  // const firstLaunch = false;
+  const [isLoading, setIsLoading] = React.useState<boolean>(true);
+  const [appLaunched, setAppLaunched] = React.useState<boolean | null>(null);
+  const [user, setUser] = React.useState<boolean | null>(null);
+  const getLaunchState = async () => {
+    const launched = await AsyncStorage.getItem("appLaunched");
+    if (launched === "true") {
+      setAppLaunched(true);
+    } else {
+      setAppLaunched(false);
+    }
+    setIsLoading(false);
+  };
+  React.useEffect(() => {
+    getLaunchState();
+  });
+  // if (isLoading) {
+  //   return <SplashScreen />;
+  // }
+  const launchContext = React.useMemo(
+    () => ({
+      launch: () => {
+        getLaunchState();
+      },
+    }),
+    []
+  );
   return (
-    firstLaunch != null && (<NavigationContainer>
-      <StatusBar />
-      <RootStack.Navigator screenOptions={{ headerShown: false }}>
-        {firstLaunch && <RootStack.Screen
-          name={RootScreens.ONBOARDING}
-          component={OnboardingContainer}
-        />}
-        {/* <RootStack.Screen
-          name={RootScreens.WELCOME}
-          component={WelcomeContainer}
-        /> */}
-        <RootStack.Screen name={RootScreens.MAIN} component={MainNavigator} />
-      </RootStack.Navigator>
-    </NavigationContainer>)
+    <LaunchContext.Provider value={launchContext}>
+      <NavigationContainer>
+        <StatusBar />
+        <Stack.Navigator>
+          {/* {appLaunched != null ? (
+            <Stack.Screen
+              name={RootScreens.ONBOARDING}
+              component={OnboardingContainer}
+              options={{ headerShown: false }}
+            />
+          ) : user != null ? (
+            <Stack.Screen
+              name={RootScreens.AUTHENTICATION}
+              component={AuthenticationNavigator}
+              options={{
+                headerShown: false,
+              }}
+            />
+          ) : (
+            <>
+              <Stack.Screen
+                name={RootScreens.MAIN}
+                component={MainNavigator}
+                options={{
+                  headerTitle: () => <SearchBar />,
+                  headerShadowVisible: false,
+                  headerBackVisible: false,
+                }}
+              />
+              <Stack.Screen
+                name={RootScreens.SEARCH}
+                component={SearchNavigator}
+                options={{
+                  headerTitle: () => <SearchBar />,
+                  headerShadowVisible: false,
+                  headerBackVisible: false,
+                }}
+              />
+            </>
+          )} */}
+          <Stack.Screen
+            name={RootScreens.AUTHENTICATION}
+            component={AuthenticationNavigator}
+            options={{
+              headerShown: false,
+            }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </LaunchContext.Provider>
   );
 };
 

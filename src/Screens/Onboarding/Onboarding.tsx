@@ -1,11 +1,5 @@
 import Onboarding from "react-native-onboarding-swiper";
-import {
-  Image,
-  View,
-  StyleSheet,
-  SafeAreaView,
-  ScrollView,
-} from "react-native";
+import { Image, View, StyleSheet, ScrollView } from "react-native";
 import React from "react";
 import { RootScreens } from "..";
 import {
@@ -14,18 +8,18 @@ import {
   FAB,
   Divider,
   List,
-  MD3Colors,
   IconButton,
   Switch,
   Snackbar,
 } from "react-native-paper";
 import { StatusBar } from "expo-status-bar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { OnboardingContainer } from "./OnboardingContainer";
 import { Center, Row } from "native-base";
 
 export const OnboardingScreen = (props: {
   onNavigate: (string: RootScreens) => void;
+  replace: (string: RootScreens) => void;
+  getLaunch: () => void;
 }) => {
   const [visible, setVisible] = React.useState(false);
   const onDismissSnackBar = () => setVisible(false);
@@ -42,8 +36,9 @@ export const OnboardingScreen = (props: {
           <Button
             mode="text"
             onPress={async () => {
-              props.onNavigate(RootScreens.MAIN);
               await AsyncStorage.setItem("appLaunched", "true");
+              props.getLaunch();
+              // props.replace(RootScreens.MAIN);
             }}
           >
             Bỏ qua
@@ -53,8 +48,9 @@ export const OnboardingScreen = (props: {
           <Button
             mode="contained-tonal"
             onPress={async () => {
-              props.onNavigate(RootScreens.MAIN);
               await AsyncStorage.setItem("appLaunched", "true");
+              props.getLaunch();
+              // props.replace(RootScreens.MAIN);
             }}
           >
             Xong
@@ -92,7 +88,7 @@ export const OnboardingScreen = (props: {
             ),
             subtitle: (
               <View style={styles.onboardingContainer}>
-                <ScrollView >
+                <ScrollView>
                   <View style={styles.onboardingElement}>
                     <FAB
                       icon="spa"
@@ -204,14 +200,14 @@ export const OnboardingScreen = (props: {
                       right={() => (
                         <IconButton icon="close" size={20}></IconButton>
                       )}
-                      style={{  }}
+                      style={{}}
                     />
                     <Button
                       icon="plus"
                       onPress={() => {
                         setVisible(!visible);
                       }}
-                      style={{flex:0}}
+                      style={{ flex: 0 }}
                     >
                       Thêm phân loại
                     </Button>
