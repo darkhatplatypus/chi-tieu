@@ -150,14 +150,14 @@ export const OnboardingScreen = (props: {
             title: (
               <Text variant="displaySmall" style={{ marginHorizontal: 20 }}>
                 Chào mừng đến với Chi Tiêu
-              </Text>
+              </Text>>
             ),
             subtitle: (
               <View style={styles.onboardingContainer}>
                 <Text variant="bodyMedium">
                   Trước khi tiếp tục, bạn nên xem qua các phân loại cho các
-                  khoản chi thường dùng, và chỉnh sửa theo sở thích. Ngoài ra
-                  bạn có thể tinh chỉnh một số cài đặt hay dùng.
+                  khoản chi thường dùng, và chỉnh sửa theo sở thích.
+                  Bạn cũng có thể tinh chỉnh một số cài đặt hay dùng.
                 </Text>
                 <ScrollView
                   style={styles.scrollView}

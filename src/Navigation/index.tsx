@@ -11,19 +11,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { RootProps } from "@/Screens";
 import { createContext } from "react";
 import { AuthenticationNavigator } from "./Authentication";
+import SearchBar from "@/Components/SearchBar";
+import FloatingActionButton from "@/Components/fab";
 
 const Stack = createNativeStackNavigator<RootProps>();
-
-const SearchBar = () => {
-  const [searchQuery, setSearchQuery] = React.useState("");
-  return (
-    <Searchbar
-      placeholder="Search"
-      onChangeText={setSearchQuery}
-      value={searchQuery}
-    />
-  );
-};
 
 const SplashScreen = () => {
   return (
@@ -106,14 +97,27 @@ const ApplicationNavigator = () => {
             </>
           )} */}
           <Stack.Screen
-            name={RootScreens.AUTHENTICATION}
-            component={AuthenticationNavigator}
+            name={RootScreens.MAIN}
+            component={MainNavigator}
             options={{
-              headerShown: false,
+              headerTitle: () => (
+                <View
+                  style={{
+                    flex: 1,
+                    alignItems: "center",
+                    marginRight: 32,
+                  }}
+                >
+                  <SearchBar />
+                </View>
+              ),
+              headerShadowVisible: false,
+              headerBackVisible: false,
             }}
           />
         </Stack.Navigator>
       </NavigationContainer>
+      <FloatingActionButton></FloatingActionButton>
     </LaunchContext.Provider>
   );
 };
