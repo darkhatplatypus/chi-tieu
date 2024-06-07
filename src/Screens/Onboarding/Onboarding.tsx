@@ -14,13 +14,16 @@ import {
 } from "react-native-paper";
 import { StatusBar } from "expo-status-bar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Center, Row } from "native-base";
+import { useContext } from "react";
+import { AppLaunchContext } from "@/Navigation/AppLaunchContext";
 
-export const OnboardingScreen = (props: {
+interface OnboardingProps {
   onNavigate: (string: RootScreens) => void;
   replace: (string: RootScreens) => void;
-  getLaunch: () => void;
-}) => {
+}
+
+export const OnboardingScreen = (props: OnboardingProps) => {
+  const { appLaunched, setAppLaunched } = useContext(AppLaunchContext);
   const [visible, setVisible] = React.useState(false);
   const onDismissSnackBar = () => setVisible(false);
   return (
@@ -37,7 +40,7 @@ export const OnboardingScreen = (props: {
             mode="text"
             onPress={async () => {
               await AsyncStorage.setItem("appLaunched", "true");
-              props.getLaunch();
+              setAppLaunched(true);
               // props.replace(RootScreens.MAIN);
             }}
           >
@@ -49,8 +52,7 @@ export const OnboardingScreen = (props: {
             mode="contained-tonal"
             onPress={async () => {
               await AsyncStorage.setItem("appLaunched", "true");
-              props.getLaunch();
-              // props.replace(RootScreens.MAIN);
+              setAppLaunched(true);
             }}
           >
             Xong
@@ -150,14 +152,14 @@ export const OnboardingScreen = (props: {
             title: (
               <Text variant="displaySmall" style={{ marginHorizontal: 20 }}>
                 Chào mừng đến với Chi Tiêu
-              </Text>>
+              </Text>
             ),
             subtitle: (
               <View style={styles.onboardingContainer}>
                 <Text variant="bodyMedium">
                   Trước khi tiếp tục, bạn nên xem qua các phân loại cho các
-                  khoản chi thường dùng, và chỉnh sửa theo sở thích.
-                  Bạn cũng có thể tinh chỉnh một số cài đặt hay dùng.
+                  khoản chi thường dùng, và chỉnh sửa theo sở thích. Bạn cũng có
+                  thể tinh chỉnh một số cài đặt hay dùng.
                 </Text>
                 <ScrollView
                   style={styles.scrollView}

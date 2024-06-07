@@ -1,24 +1,24 @@
 import { History } from "./History";
 import React, { useState, useEffect } from "react";
-import { useLazyGetUserQuery } from "@/Services";
-import { RootScreens } from "..";
+import { useLazyGetAllTransactionsQuery } from "@/Services";
+import { BottomTabRouteProps, BottomTabScreens, RootScreens } from "..";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { StackParamList } from "@/Navigation";
+import { RootProps } from "..";
 
-type MainScreenNavigatorProps = NativeStackScreenProps<
-  StackParamList,
-  RootScreens.MAIN
+export type MainScreenNavigatorProps = NativeStackScreenProps<
+  BottomTabRouteProps,
+  BottomTabScreens.HISTORY
 >;
 
-export const HistoryContainer = () => {
-  const [userId, setUserId] = useState("9");
+export const HistoryContainer = ({ navigation }: MainScreenNavigatorProps) => {
+  // const [userId, setUserId] = useState("9");
 
-  const [fetchOne, { data, isSuccess, isLoading, isFetching, error }] =
-    useLazyGetUserQuery();
+  // const [fetchTransactions, { data, isSuccess, isLoading, isFetching, error }] =
+  //   useLazyGetAllTransactionsQuery();
 
-  useEffect(() => {
-    fetchOne(userId);
-  }, [fetchOne, userId]);
+  // useEffect(() => {
+  //   fetchTransactions()
+  // }, [fetchTransactions]);
 
-  return <History data={data} isLoading={isLoading} />;
+  return <History navigation={navigation} />;
 };

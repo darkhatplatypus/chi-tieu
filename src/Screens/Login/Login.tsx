@@ -9,8 +9,6 @@ import {
   ScrollView,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { HStack, Spinner, Heading, Row } from "native-base";
-import { User } from "@/Services";
 import {
   Button,
   Text,
@@ -22,15 +20,45 @@ import {
 } from "react-native-paper";
 import { AuthenticationScreens, RootScreens } from "..";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useLoginMutation } from "@/Services";
+import { AuthenticationContext } from "@/Navigation/AuthenticationContext";
+import * as SecureStore from "expo-secure-store";
 
 export const Login = (props: {
-  replace: (string: RootScreens) => void;
   navigateTo: (string: AuthenticationScreens) => void;
 }) => {
+  const { authenticated, setAuthenticated } = React.useContext(
+    AuthenticationContext
+  );
+  const [login, { data, status, error, isLoading }] = useLoginMutation();
+  const handleLogin = async (email: string, password: string) => {
+    if (!email || !password) {
+      setText(
+        "Email hoặc mật khẩu không được để trống. Vui lòng điền đầy đủ thông tin."
+      );
+      // console.log(authenticated);
+      showDialog();
+      return;
+    }
+    try {
+      // console.log("started query");
+      const response = await login({ email, password }).unwrap();
+      await AsyncStorage.setItem("authenticated", 'true');
+      SecureStore.setItem("token", response.token);
+      setAuthenticated(true);
+      // console.log(response);
+    } catch (err) {
+      setText(
+        "Đã có lỗi xảy ra. Vui lòng thử lại sau ít phút hoặc kiểm tra lại email và mật khẩu."
+      );
+      showDialog();
+    }
+  };
   const image = require("../../../assets/onboard-bg-1.png");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [visible, setVisible] = React.useState(false);
+  const [text, setText] = React.useState("");
   const showDialog = () => setVisible(true);
   const hideDialog = () => setVisible(false);
   return (
@@ -70,11 +98,7 @@ export const Login = (props: {
             />
             <Button
               mode="contained"
-              // onPress={async () => {
-              //   await AsyncStorage.setItem("appLaunched", "true");
-              //   props.replace(RootScreens.MAIN);
-              // }}
-              onPress={showDialog}
+              onPress={() => handleLogin(email, password)}
             >
               Đăng nhập
             </Button>
@@ -102,9 +126,25 @@ export const Login = (props: {
             </Button>
             <Portal>
               <Dialog
+                visible={isLoading}
+                dismissable={false}
+                dismissableBackButton={false}
+              >
+                <Dialog.Content
+                  style={{
+                    flexDirection: "row",
+                    gap: 10,
+                    alignItems: "center",
+                  }}
+                >
+                  <ActivityIndicator size="large" color={MD3Colors.primary0} />
+                  <Text variant="bodyMedium">Đang tải...</Text>
+                </Dialog.Content>
+              </Dialog>
+              <Dialog
                 visible={visible}
                 onDismiss={hideDialog}
-                dismissable={false}
+                dismissable={true}
                 dismissableBackButton={true}
               >
                 {/* <Dialog.Title>Alert</Dialog.Title> */}
@@ -115,12 +155,11 @@ export const Login = (props: {
                     alignItems: "center",
                   }}
                 >
-                  <ActivityIndicator size="large" color={MD3Colors.primary0} />
-                  <Text variant="bodyMedium">This is a simple dialog</Text>
+                  <Text variant="bodyMedium">{text}</Text>
                 </Dialog.Content>
-                {/* <Dialog.Actions>
-                <Button onPress={hideDialog}>Done</Button>
-              </Dialog.Actions> */}
+                <Dialog.Actions>
+                  <Button onPress={hideDialog}>OK</Button>
+                </Dialog.Actions>
               </Dialog>
             </Portal>
           </ImageBackground>

@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { HStack, Spinner, Heading } from "native-base";
-import { User } from "@/Services";
+import { useCreateWalletMutation, useLoginMutation, User } from "@/Services";
 import {
   Button,
   Text,
@@ -22,7 +22,9 @@ import {
   Dialog,
 } from "react-native-paper";
 import { RootScreens } from "..";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useRegisterMutation } from "@/Services";
+import * as SecureStore from "expo-secure-store";
+import { AuthenticationContext } from "@/Navigation/AuthenticationContext";
 
 export const Signup = (props: {
   replace: (string: RootScreens) => void;
@@ -35,6 +37,58 @@ export const Signup = (props: {
   const [password, setPassword] = React.useState("");
   const [phoneNumber, setPhoneNumber] = React.useState("");
   const [visible, setVisible] = React.useState(false);
+  const [signup, { data, status, error, isLoading }] = useRegisterMutation();
+  const [login, loginResponse] = useLoginMutation();
+  const [createWallet, createWalletResponse] = useCreateWalletMutation();
+  const { authenticated, setAuthenticated } = React.useContext(
+    AuthenticationContext
+  );
+  const handleSignup = async (
+    email: string,
+    name: string,
+    password: string,
+    phoneNumber: string
+  ) => {
+    if (!email || !name || !password || !phoneNumber) {
+      setText(
+        "Email, tên, mật khẩu và số điện thoại không được để trống. Vui lòng điền đầy đủ thông tin và thử lại."
+      );
+      showDialog();
+      return;
+    }
+    try {
+      // console.log("started query");
+      const signupResponse = await signup({
+        email,
+        name,
+        password,
+        phoneNumber,
+      });
+      const loginResponse = await login({ email, password })
+        .unwrap()
+        .then((res) => {
+          console.log(res);
+          SecureStore.setItem("token", res.token);
+        });
+      const responseCreateWallet = await createWallet()
+        .unwrap()
+        .then((res) => {
+          console.log(res);
+          SecureStore.setItem("wallet", res._id);
+        });
+      Promise.all([loginResponse, responseCreateWallet, signupResponse]).then(
+        () => {
+          setAuthenticated(true);
+        }
+      );
+      // console.log(response);
+    } catch (err) {
+      console.log(err);
+      setText("Đã có lỗi xảy ra. Vui lòng thử lại sau ít phút.");
+      showDialog();
+    }
+  };
+  const [text, setText] = React.useState("");
   const showDialog = () => setVisible(true);
   const hideDialog = () => setVisible(false);
   return (
@@ -63,7 +117,7 @@ export const Signup = (props: {
             />
             <TextInput
               mode="outlined"
-              label="Name"
+              label="Tên"
               value={name}
               onChangeText={(text) => setName(text)}
               returnKeyType="next"
@@ -77,7 +131,7 @@ export const Signup = (props: {
             />
             <TextInput
               mode="outlined"
-              label="Password"
+              label="Mật khẩu"
               secureTextEntry={true}
               value={password}
               onChangeText={(text) => setPassword(text)}
@@ -92,7 +146,7 @@ export const Signup = (props: {
             />
             <TextInput
               mode="outlined"
-              label="Phone number"
+              label="Số điện thoại"
               value={phoneNumber}
               inputMode="numeric"
               onChangeText={(text) => setPhoneNumber(text)}
@@ -107,14 +161,13 @@ export const Signup = (props: {
               //   await AsyncStorage.setItem("appLaunched", "true");
               //   props.replace(RootScreens.MAIN);
               // }}
-              onPress={showDialog}
+              onPress={() => handleSignup(email, name, password, phoneNumber)}
             >
               Đăng ký
             </Button>
             <Button
               mode="text"
               onPress={async () => {
-                await AsyncStorage.setItem("appLaunched", "true");
                 props.back();
               }}
             >
@@ -122,9 +175,25 @@ export const Signup = (props: {
             </Button>
             <Portal>
               <Dialog
+                visible={isLoading}
+                dismissable={false}
+                dismissableBackButton={false}
+              >
+                <Dialog.Content
+                  style={{
+                    flexDirection: "row",
+                    gap: 10,
+                    alignItems: "center",
+                  }}
+                >
+                  <ActivityIndicator size="large" color={MD3Colors.primary0} />
+                  <Text variant="bodyMedium">Đang tải...</Text>
+                </Dialog.Content>
+              </Dialog>
+              <Dialog
                 visible={visible}
                 onDismiss={hideDialog}
-                dismissable={false}
+                dismissable={true}
                 dismissableBackButton={true}
               >
                 {/* <Dialog.Title>Alert</Dialog.Title> */}
@@ -135,12 +204,11 @@ export const Signup = (props: {
                     alignItems: "center",
                   }}
                 >
-                  <ActivityIndicator size="large" color={MD3Colors.primary0} />
-                  <Text variant="bodyMedium">This is a simple dialog</Text>
+                  <Text variant="bodyMedium">{text}</Text>
                 </Dialog.Content>
-                {/* <Dialog.Actions>
-                <Button onPress={hideDialog}>Done</Button>
-              </Dialog.Actions> */}
+                <Dialog.Actions>
+                  <Button onPress={hideDialog}>OK</Button>
+                </Dialog.Actions>
               </Dialog>
             </Portal>
           </ImageBackground>

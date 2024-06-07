@@ -1,24 +1,35 @@
 import { Overview } from "./Overview";
 import React, { useState, useEffect } from "react";
-import { useLazyGetUserQuery } from "@/Services";
-import { RootScreens } from "..";
+import { useGetAmountThisMonthQuery, useLazyGetUserQuery } from "@/Services";
+import { BottomTabRouteProps, BottomTabScreens, RootScreens } from "..";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootProps } from "..";
+import { AuthenticationContext } from "@/Navigation/AuthenticationContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-type MainScreenNavigatorProps = NativeStackScreenProps<
-  RootProps,
-  RootScreens.MAIN
+type OverviewNavigatorProps = NativeStackScreenProps<
+  BottomTabRouteProps,
+  BottomTabScreens.OVERVIEW
 >;
 
-export const OverviewContainer = () => {
-  const [userId, setUserId] = useState("9");
+export const OverviewContainer = ({ navigation }: OverviewNavigatorProps) => {
+  const onNavigate = (screen: BottomTabScreens) => {
+    navigation.navigate(screen);
+  };
+  const { authenticated, setAuthenticated } = React.useContext(
+    AuthenticationContext
+  );
 
-  const [fetchOne, { data, isSuccess, isLoading, isFetching, error }] =
+  const [fetchUser, { data, isSuccess, isLoading, error }] =
     useLazyGetUserQuery();
 
   useEffect(() => {
-    fetchOne(userId);
-  }, [fetchOne, userId]);
+    fetchUser()
+      .unwrap()
+      .catch(() => {
+        setAuthenticated(false);
+      });
+    // console.log(data);
+  }, [fetchUser]);
 
-  return <Overview data={data} isLoading={isLoading} />;
+  return <Overview isLoading={isLoading} onNavigate={onNavigate} />;
 };

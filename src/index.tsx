@@ -6,7 +6,8 @@ import { store, persistor } from "@/Store";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { ApplicationNavigator } from "./Navigation";
-import * as NavigationBar from 'expo-navigation-bar';
+import * as NavigationBar from "expo-navigation-bar";
+import { SplashScreen } from "./Screens/SplashScreen";
 
 i18n.locale = Localization.locale;
 i18n.enableFallback = true;
@@ -18,7 +19,7 @@ export default function App() {
   return (
     <NativeBaseProvider>
       <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
+        <PersistGate loading={<SplashScreen />} persistor={persistor}>
           <ApplicationNavigator />
         </PersistGate>
       </Provider>

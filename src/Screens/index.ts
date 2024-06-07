@@ -1,8 +1,11 @@
 export enum RootScreens {
+  SPLASH = "SplashScreen",
   MAIN = "Main",
   ONBOARDING = "Onboarding",
   AUTHENTICATION = "Authentication",
   SEARCH = "Search",
+  DETAILS = "Details",
+  EDIT = "Edit",
 }
 
 export type RootProps = {
@@ -11,6 +14,9 @@ export type RootProps = {
   [RootScreens.ONBOARDING]: undefined;
   [RootScreens.AUTHENTICATION]: undefined;
   [RootScreens.SEARCH]: undefined;
+  [RootScreens.DETAILS]: undefined;
+  [RootScreens.EDIT]: undefined;
+  [RootScreens.SPLASH]: undefined;
 };
 
 export enum BottomTabScreens {

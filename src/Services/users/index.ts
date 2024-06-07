@@ -1,42 +1,38 @@
-import { API } from "../base";
+// import { API } from "../API";
 
-export interface Geo {
-  lat: string;
-  lng: string;
-}
+// export interface Geo {
+//   lat: string;
+//   lng: string;
+// }
 
-export interface Address {
-  city: string;
-  geo: Geo;
-  street: string;
-  suite: string;
-  zipcode: string;
-}
+// export interface Address {
+//   city: string;
+//   geo: Geo;
+//   street: string;
+//   suite: string;
+//   zipcode: string;
+// }
 
-export interface Company {
-  bs: string;
-  catchPhrase: string;
-  name: string;
-}
+// export interface Company {
+//   bs: string;
+//   catchPhrase: string;
+//   name: string;
+// }
 
-export interface User {
-  address: Address;
-  company: Company;
-  email: string;
-  id: number;
-  name: string;
-  phone: string;
-  username: string;
-  website: string;
-}
+// export interface User {
+//   _id: string;
+//   email: string;
+//   name: string;
+//   phoneNumber: string;
+// }
 
-const userApi = API.injectEndpoints({
-  endpoints: (build) => ({
-    getUser: build.query<User, string>({
-      query: (id) => `users/${id}`,
-    }),
-  }),
-  overrideExisting: true,
-});
+// const userApi = API.injectEndpoints({
+//   endpoints: (builder) => ({
+//     getUser: builder.query<User, string|void>({
+//       query: (id) => `users/${id}`,
+//     }),
+//   }),
+//   overrideExisting: true,
+// });
 
-export const { useLazyGetUserQuery } = userApi;
+// // export const { useLazyGetUserQuery } = userApi;
