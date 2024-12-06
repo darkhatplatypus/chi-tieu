@@ -53,8 +53,8 @@ export const Overview = (props: OverviewProps) => {
   React.useEffect(() => {
     fetchAmount();
     AsyncStorage.setItem("wallet", wallets.data?.wallets.slice(-1).pop()?._id)
-    .finally(() => {
-      setLoading(false);
+      .finally(() => {
+        setLoading(false);
       })
       .catch((err) => console.log(err));
   }, [fetchAmount]);
@@ -79,7 +79,7 @@ export const Overview = (props: OverviewProps) => {
               padding: 16,
               flex: 1,
               alignItems: "center",
-              justifyContent: "center",
+              justifyContent: "center", // inline css nhu con cac
               flexDirection: "row",
               gap: 16,
             }}
